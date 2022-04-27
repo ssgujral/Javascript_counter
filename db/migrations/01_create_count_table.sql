@@ -1,0 +1,2 @@
+CREATE TABLE count(id SERIAL PRIMARY KEY, count INT);
+INSERT INTO count VALUES(1, 0);
