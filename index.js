@@ -17,37 +17,42 @@ app.get('/', (req, res) =>
   
   client.connect();
   
-  
-  client.query('SELECT count FROM count WHERE id = 1;')
-  .then(res => console.log(res.rows[0]))
-  .catch(e => console.error(e.stack));
 
+
+  client.query('SELECT count FROM count WHERE id = 1;')
+    .then(dbResponse => res.send(`Count is ${dbResponse.rows[0].count}`))
+    .catch(e => console.error(e.stack));
+
+  //const result = client.query('SELECT count FROM count WHERE id = 1;');
+
+  //const formatted_result = result.rows[0].count;
+
+  
+  //res.send(`This is: ${result}`);
+  //res.send(`This is: ${formatted_result}`);
       
 
 });
 
-app.get('/increment', (req, res) => {
+app.get('/increment', (req, res) => 
+{
 
-  const client = new Client({
-  
-    connectionString,
+    const client = new Client
+  ({
+    
+      connectionString,
 
+  });
+
+
+
+  client.connect();
+
+  client.query('UPDATE count SET count = count + 1 WHERE id = 1; SELECT count FROM count WHERE id = 1;')
+    .then(dbResponse => res.send(`Your count has been incremented by 1.`))
+    .catch(e => console.error(e.stack));
 });
 
-client.connect();
-
-client.query('UPDATE count SET count = count + 1 WHERE id = 1;')
-  .then(res => console.log(res.rows[0]))
-  .catch(e => console.error(e.stack));
-
-
-
-
-
-  //count += 1;
-  //res.send(`Your count has been incremented and is now ${count}.`);
-
-});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
